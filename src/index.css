@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-layout {
+  margin: 0 auto;
+  background-position: center;
+  background-size: contain;
+  max-width: 1440px;
+}
+
+.layout-children {
+  margin: 0 auto;
+}
