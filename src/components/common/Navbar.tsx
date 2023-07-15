@@ -1,8 +1,23 @@
-import { Link, NavLink } from 'react-router-dom';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { NavLink } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../lib/firebase';
+import { setUser } from '../../redux/features/users/userSlice';
 
 
 export default function Navbar() {
+    const { user } = useAppSelector((state) => state.user);
+    const dispatch = useAppDispatch();
 
+    const handleLogout = () => {
+        console.log('Logout');
+        signOut(auth).then(() => {
+            // Sign-out successful.
+            dispatch(setUser(null));
+        });
+    };
     return (
         <div className="navbar bg-base-100">
             <div className="flex-1">
@@ -29,11 +44,30 @@ export default function Navbar() {
                         <li>
                             <a className="justify-between">
                                 Profile
-                                <span className="badge">New</span>
                             </a>
                         </li>
-                        <li><a>Settings</a></li>
-                        <li><a>Logout</a></li>
+                        {
+                            !user.email &&
+                            <>
+                                <li>
+                                    <NavLink to={'/login'}>LogIn</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={'/signup'}>SignUp</NavLink>
+                                </li>
+                            </>
+                        }
+                        {
+                            user.email &&
+                            <li onClick={handleLogout}>
+
+                                <a className="justify-between">
+                                    LogOut
+                                </a>
+                            </li>
+
+                        }
+
                     </ul>
                 </div>
             </div>
