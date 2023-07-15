@@ -9,11 +9,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 import { useForm } from "react-hook-form";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface LoginFormInputs {
-    image: any[];
+    image: string;
     title: string;
     author: string;
     genre: string;
@@ -38,7 +39,7 @@ export default function AddNewBooks() {
             .then(result => {
                 if (result.success) {
                     const img = result.data.url;
-                    const doctor = {
+                    const book = {
                         title: data.title,
                         author: data.author,
                         genre: data.genre,
@@ -46,13 +47,13 @@ export default function AddNewBooks() {
                         img: img
                     }
                     // send to your database 
-                    fetch('http://localhost:5000/book', {
+                    fetch('http://localhost:5001/book', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',
-                            authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                            // authorization: `Bearer ${localStorage.getItem('accessToken')}`
                         },
-                        body: JSON.stringify(doctor)
+                        body: JSON.stringify(book)
                     })
                         .then(res => res.json())
                         .then(inserted => {
@@ -72,8 +73,8 @@ export default function AddNewBooks() {
 
 
     return (
-        <div>
-            <h2 className="text-2xl">Add a New Book</h2>
+        <div className='pl-24'>
+            <h2 className="text-4xl">Add a New Book</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -177,7 +178,8 @@ export default function AddNewBooks() {
                     </label>
                 </div>
 
-                <input className='btn w-full max-w-xs text-white' type="submit" value="Add Book" />
+                <input className='btn w-full max-w-xs text-black bg-cyan-800' type="submit" value="Add Book" />
+                <ToastContainer />
             </form>
         </div>
     );
