@@ -3,6 +3,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useSingleBookQuery } from '../redux/api/apiSlice';
+import Footer from '../components/common/footer';
 
 export default function BookDetails() {
     const { id } = useParams();
@@ -13,12 +14,12 @@ export default function BookDetails() {
 
     return (
         <>
-            <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300">
+            <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300 mb-48">
                 <div className="w-full">
-                    <img src={book?.image} alt="" />
+                    <img className='w-[60%]' src={book?.image} alt="" />
                 </div>
                 <div className="w-[50%] space-y-3">
-                    <h1 className="text-3xl font-semibold">{book?.title}</h1>
+                    <h1 className="text-3xl font-semibold">Title:{book?.title}</h1>
                     <p className="text-xl">Author: {book?.author}</p>
                     <p className="text-xl">Genre: {book?.grnre}</p>
                     <p className="text-xl">Publication Date: {book?.publicationDate}</p>
@@ -26,7 +27,7 @@ export default function BookDetails() {
 
                 </div>
             </div>
-
+            <Footer />
         </>
     );
 }

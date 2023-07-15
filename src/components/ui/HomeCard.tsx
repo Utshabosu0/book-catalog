@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { IBook } from '../../tyoes/globalTypes';
+import { Link } from 'react-router-dom';
 
 
 interface IProps {
@@ -17,7 +18,9 @@ export default function HomeCard({ book }: IProps) {
                 <p>{book?.genre}</p>
                 <p>{book?.publicationDate}</p>
                 <div className="card-actions justify-end">
-                    <button className="btn btn-primary">Book Details</button>
+                    <Link to={`/book-details/${book._id}`} className="btn btn-primary">
+                        Book Details
+                    </Link>
                 </div>
             </div>
         </div>
