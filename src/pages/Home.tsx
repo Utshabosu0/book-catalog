@@ -12,12 +12,6 @@ import { useGetBooksQuery } from "../redux/api/apiSlice"
 import { IBook } from "../tyoes/globalTypes"
 
 export default function Home() {
-    // const [book, setBook] = useState([] as IBook[]);
-    // useEffect(() => {
-    //     fetch('http://localhost:5001/book')
-    //         .then((res) => res.json())
-    //         .then((data) => setBook(data?.data));
-    // }, []);
     const { data, isLoading, error } = useGetBooksQuery(undefined)
 
 

@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home";
 import AddNewBooks from "../pages/AddNewBooks";
+import Books from "../pages/Books";
 
 const routes = createBrowserRouter([
     {
@@ -18,7 +19,11 @@ const routes = createBrowserRouter([
                 element: <AddNewBooks />,
             },
             {
-                path: '/product-details/:id',
+                path: '/allBooks',
+                element: <Books />,
+            },
+            {
+                path: '/book-details/:id',
                 // element: <ProductDetails />,
             },
         ],

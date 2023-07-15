@@ -17,7 +17,7 @@ export default function Navbar() {
             <div className="flex-none gap-2">
 
                 <li className='list-none mx-5'><NavLink className='nav-button-link' to="/">Home</NavLink></li>
-                <li className='list-none mx-5'><NavLink className='nav-button-link' to="/categroies">Categroies</NavLink></li>
+                <li className='list-none mx-5'><NavLink className='nav-button-link' to="/allBooks">Books</NavLink></li>
 
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">

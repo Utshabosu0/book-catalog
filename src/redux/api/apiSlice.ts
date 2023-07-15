@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const api = createApi({
@@ -5,8 +7,11 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5001' }),
   endpoints: (builder) => ({
     getBooks: builder.query({
-      query: () => '/book',
+      query: () => `/book`,
+    }),
+    allBooks: builder.query({
+      query: () => `/allBook`,
     }),
   }),
 });
-export const { useGetBooksQuery } = api;
+export const { useGetBooksQuery, useAllBooksQuery } = api;
