@@ -4,6 +4,7 @@ import App from "../App";
 import Home from "../pages/Home";
 import AddNewBooks from "../pages/AddNewBooks";
 import Books from "../pages/Books";
+import BookDetails from "../pages/BookDetails";
 
 const routes = createBrowserRouter([
     {
@@ -24,7 +25,7 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/book-details/:id',
-                // element: <ProductDetails />,
+                element: <BookDetails />,
             },
         ],
     },

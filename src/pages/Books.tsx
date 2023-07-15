@@ -1,28 +1,40 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React from 'react'
+import React, { useState } from 'react'
 import BookData from '../components/ui/BookData'
 import { Slider } from '@radix-ui/react-slider'
 import { useAllBooksQuery } from '../redux/api/apiSlice'
 import { IBook } from '../tyoes/globalTypes'
 
 export default function Books() {
-    const { data, isLoading, error } = useAllBooksQuery(undefined)
+    const [searchTerm, setSearchTerm] = useState('');
+    const [displayProducts, setDisplayProducts] = useState([]);
+    const { data: books, isLoading, error } = useAllBooksQuery(undefined)
 
-    // const handleSearch = event => {
-    //     const searchText = event.target.value;
-    //     // console.log(searchText);
-    //     const matchProducts = products.filter(product => product.name.toLowerCase().includes(searchText.toLowerCase()));
-    //     setDisplayProducts(matchProducts);
-    //     // console.log(matchProducts.length);
-    // }
+    const handleSearchTermChange = (event: { target: { value: any } }) => {
+        console.log(event.target.value)
+        setSearchTerm(event.target.value);
+        const filteredBooks = books?.data.filter((book: IBook) => {
+            const titleMatch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
+            const authorMatch = book.author.toLowerCase().includes(searchTerm.toLowerCase());
+            const genreMatch = book.genre.toLowerCase().includes(searchTerm.toLowerCase());
+
+
+            return titleMatch || authorMatch || genreMatch;
+        });
+        setDisplayProducts(filteredBooks)
+    };
     return (
         <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
             <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
                 <div>
                     <h1 className="text-2xl uppercase">Availability</h1>
-                    <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
+                    <input type="text"
+
+                        onChange={handleSearchTermChange} placeholder="Search" className="input input-bordered w-24 md:w-auto" />
                     <button>Search</button>
                 </div>
                 <div className="space-y-3 ">
@@ -41,7 +53,7 @@ export default function Books() {
             </div>
             <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
                 {
-                    data?.data.map((book: IBook) => {
+                    books?.data.map((book: IBook) => {
                         return <BookData book={book} />
                     })
                 }
