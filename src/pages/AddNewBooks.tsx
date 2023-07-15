@@ -13,7 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-interface LoginFormInputs {
+interface AddNewBook {
     image: string;
     title: string;
     author: string;
@@ -22,11 +22,11 @@ interface LoginFormInputs {
 }
 
 export default function AddNewBooks() {
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<LoginFormInputs>();
+    const { register, formState: { errors }, handleSubmit, reset } = useForm<AddNewBook>();
 
     const imageStorageKey = '4295ac4d47b569312bea67b440cdbdbb';
 
-    const onSubmit = (data: LoginFormInputs) => {
+    const onSubmit = (data: AddNewBook) => {
         const image = data.image[0];
         const formData = new FormData();
         formData.append('image', image);
@@ -38,13 +38,13 @@ export default function AddNewBooks() {
             .then(res => res.json())
             .then(result => {
                 if (result.success) {
-                    const img = result.data.url;
+                    const image = result.data.url;
                     const book = {
                         title: data.title,
                         author: data.author,
                         genre: data.genre,
                         publicationDate: data.publicationDate,
-                        img: img
+                        image: image
                     }
                     // send to your database 
                     fetch('http://localhost:5001/book', {
