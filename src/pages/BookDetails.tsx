@@ -9,20 +9,13 @@ import { useDeleteBookMutation, useSingleBookQuery } from '../redux/api/apiSlice
 
 export default function BookDetails() {
     const { id } = useParams();
-    const navigate = useNavigate();
+
 
     const { data: book, isLoading, error } = useSingleBookQuery(id)
 
-    const [deleteBook] = useDeleteBookMutation();
 
-    const handleDeleteBook = async () => {
-        try {
-            await deleteBook(id);
-            navigate('/');
-        } catch (error) {
-            console.error('Error deleting book:', error);
-        }
-    };
+
+
 
 
 
@@ -43,8 +36,7 @@ export default function BookDetails() {
             <div>
 
                 <Link className="btn bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 ml-[1100px] mb-3 " to={'/addNewBook'}>Add New Book </Link>
-                <button className="btn bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 ml-[1100px] mb-5"
-                    onClick={handleDeleteBook}>Add New Book </button>
+
             </div>
 
         </>
