@@ -1,63 +1,155 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable prefer-const */
+/* eslint-disable no-dupe-else-if */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import React, { useState } from 'react'
 import BookData from '../components/ui/BookData'
-import { Slider } from '@radix-ui/react-slider'
 import { useAllBooksQuery } from '../redux/api/apiSlice'
 import { IBook } from '../tyoes/globalTypes'
+import { useForm } from 'react-hook-form'
+import { useAppDispatch, useAppSelector } from '../redux/hook'
+import { setGenre, setSearch, setpublicationDate } from '../redux/features/Book/bookSlice'
+import { Link } from 'react-router-dom'
 
 export default function Books() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [displayProducts, setDisplayProducts] = useState([]);
-    const { data: books, isLoading, error } = useAllBooksQuery(undefined)
-
-    const handleSearchTermChange = (event: { target: { value: any } }) => {
-        console.log(event.target.value)
-        setSearchTerm(event.target.value);
-        const filteredBooks = books?.data.filter((book: IBook) => {
-            const titleMatch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
-            const authorMatch = book.author.toLowerCase().includes(searchTerm.toLowerCase());
-            const genreMatch = book.genre.toLowerCase().includes(searchTerm.toLowerCase());
+    const { register } = useForm();
 
 
-            return titleMatch || authorMatch || genreMatch;
-        });
-        setDisplayProducts(filteredBooks)
+    const { data: books } = useAllBooksQuery(undefined)
+
+
+
+    const { genre, publicationDate, search } = useAppSelector((state) => state.book)
+
+    const dispatch = useAppDispatch()
+
+    const handleGenreFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedGenre = event.target.value;
+        dispatch(setGenre(selectedGenre));
     };
+    const handlePublicationDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedPublication = event.target.value;
+        dispatch(setpublicationDate(selectedPublication));
+
+    };
+
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchText = event.target.value.toLowerCase();
+        const filteredBooks = books?.data.filter(
+            (book: IBook) =>
+                book.title.toLowerCase().includes(searchText) ||
+                book.author.toLowerCase().includes(searchText) ||
+                book.genre.toLowerCase().includes(searchText)
+        );
+
+        dispatch(setSearch(filteredBooks));
+    };
+
+    let bookData = search || books?.data;
+    if (genre && publicationDate) {
+        bookData = books?.data.filter(
+            (item: { genre: string, publicationDate: string }) => item.genre === genre && item.publicationDate === publicationDate);
+    } else if (genre) {
+        bookData = books?.data.filter(
+            (item: { genre: string }) => item.genre === genre);
+    }
+    else if (publicationDate) {
+        bookData = books?.data.filter(
+            (item: { publicationDate: string }) => item.publicationDate === publicationDate
+        )
+    } else {
+        bookData = books?.data
+    }
+
+
+
+    // const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const searchText = event.target.value;
+    //     const matchedBooks = books?.data.filter((book: IBook) =>
+    //         book.title?.toLowerCase().includes(searchText.toLowerCase()) ||
+    //         book.author?.toLowerCase().includes(searchText.toLowerCase()) ||
+    //         book.genre?.toLowerCase().includes(searchText.toLowerCase())
+    //     );
+    //     dispatch(setSearch(matchedBooks));
+    // };
+
     return (
-        <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
-            <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
-                <div>
+        <>
+            <div className='flex justify-between mx-[100px]'>
+                <label className="relative block ml-[300px]">
+                    <span className="sr-only">Search</span>
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                        <svg className="h-5 w-5 fill-slate-300" viewBox="0 0 20 20"></svg>
+                    </span>
+                    <input className="w-[300px] h-[50px]  placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm" placeholder="Search by title author or genre" type="text" name="search"
+                        onChange={handleSearch}
+                    />
+                </label>
+                <Link className="btn px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 ml-[400px] mb-5" to={'/addNewBook'}>Add New Book </Link>
+
+            </div>
+
+            <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
+                <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
+                    {/* <div>
                     <h1 className="text-2xl uppercase">Availability</h1>
                     <input type="text"
 
                         onChange={handleSearchTermChange} placeholder="Search" className="input input-bordered w-24 md:w-auto" />
                     <button>Search</button>
-                </div>
-                <div className="space-y-3 ">
-                    <h1 className="text-2xl uppercase">Price Range</h1>
-                    <div className="max-w-xl">
-                        <Slider
-                            defaultValue={[150]}
-                            max={150}
-                            min={0}
-                            step={1}
+                </div> */}
 
-                        />
+                    <div className="form-control w-full max-w-xl"
+
+                    >
+                        <label className="label">
+                            <span className="label-text">Genre</span>
+                        </label>
+                        <select {...register('genre')} className="select input-bordered w-full max-w-xl"
+                            value={genre}
+                            onChange={handleGenreFilterChange}
+                        >
+                            {
+                                books?.data.map((book: IBook) => <option
+                                    key={book._id}
+                                    value={book.genre}
+                                >{book.genre}</option>)
+                            }
+                        </select>
                     </div>
-                    {/* <div>From 0$ To {priceRange}$</div> */}
+                    <div className="form-control w-full max-w-xs"
+                    >
+                        <label className="label">
+                            <span className="label-text">Publication Date</span>
+                        </label>
+                        <select {...register('publicationDate')} className="select input-bordered w-full max-w-xs"
+                            onChange={handlePublicationDateFilterChange}
+                            value={publicationDate}
+
+                        >
+                            {
+                                books?.data.map((book: IBook) => <option
+                                    key={book._id}
+                                    value={book.publicationDate}
+                                >{book.publicationDate}</option>)
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
+                    {
+                        bookData?.map((book: IBook) => {
+                            return <BookData book={book} />
+                        })
+                    }
                 </div>
             </div>
-            <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
-                {
-                    books?.data.map((book: IBook) => {
-                        return <BookData book={book} />
-                    })
-                }
-            </div>
-        </div>
+        </>
     )
 }

@@ -7,6 +7,8 @@ import Books from "../pages/Books";
 import BookDetails from "../pages/BookDetails";
 import SignUpFrom from "../pages/SignUpFrom";
 import LogInFrom from "../pages/LogInFrom";
+import NotFound from "../pages/NotFound";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = createBrowserRouter([
     {
@@ -19,7 +21,9 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/addNewBook',
-                element: <AddNewBooks />,
+                element: <PrivateRoute>
+                    <AddNewBooks />
+                </PrivateRoute>,
             },
             {
                 path: '/allBooks',
@@ -41,7 +45,7 @@ const routes = createBrowserRouter([
     },
     {
         path: '*',
-        // element: <NotFound />,
+        element: <NotFound />,
     },
 ]);
 export default routes;

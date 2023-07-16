@@ -1,12 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom'
-import { useAppDispatch } from '../redux/hook';
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { loginUser } from '../redux/features/users/userSlice';
 import signLog from '../assets/signLog.svg'
 
@@ -21,12 +24,20 @@ export default function LogInFrom() {
         handleSubmit,
         formState: { errors },
     } = useForm<LogInFormInputs>();
-
+    const { user, isLoading } = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from || { pathname: '/' }
     const onSubmit = (data: LogInFormInputs) => {
         console.log(data);
         dispatch(loginUser({ email: data.email, password: data.password }))
     }
+    useEffect(() => {
+        if (user.email && !isLoading) {
+            navigate(from, { replace: true });
+        }
+    }, [user.email, isLoading, navigate, from])
     return (
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row">
