@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -21,6 +22,13 @@ export const api = createApi({
         method: 'DELETE',
       }),
     }),
+    updateBook: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/book/${id}`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
   }),
 });
 export const {
@@ -28,4 +36,5 @@ export const {
   useAllBooksQuery,
   useSingleBookQuery,
   useDeleteBookMutation,
+  useUpdateBookMutation,
 } = api;
