@@ -13,7 +13,7 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSingleBookQuery } from '../redux/api/apiSlice';
+import { useSingleBookQuery, useUpdateBookMutation } from '../redux/api/apiSlice';
 import { useParams } from 'react-router-dom';
 
 
@@ -30,40 +30,32 @@ export default function UpdateBook() {
     const { register, formState: { errors }, handleSubmit, reset } = useForm<UpdateBook>();
 
     const { data, isLoading, error } = useSingleBookQuery(id)
+    const [updateBook] = useUpdateBookMutation();
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    const { title, author, genre, publicationDate, image } = data
-    const imageStorageKey = '4295ac4d47b569312bea67b440cdbdbb';
+    const { title, author, genre, publicationDate } = data
     const onSubmit = (data: UpdateBook) => {
-        const image = data.image[0];
-        const formData = new FormData();
-        formData.append('image', image);
-        const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(result => {
-                if (result.success) {
-                    const image = result.data.url;
-                    const book = {
-                        title: data.title,
-                        author: data.author,
-                        genre: data.genre,
-                        publicationDate: data.publicationDate,
-                        image: image
-                    }
+
+        const book = {
+            id: id,
+            data: {
+                title: data.title,
+                author: data.author,
+                genre: data.genre,
+                publicationDate: data.publicationDate
+            }
+        }
+
+        updateBook(book).unwrap();
+        toast.success('Book update successfully');
 
 
-                }
 
-            })
+
     }
-
 
     return (
         <div className='pl-24'>
@@ -78,7 +70,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Title"
-                        value={title}
+                        defaultValue={title}
                         className="input input-bordered w-full max-w-xs"
                         {...register("title", {
                             required: {
@@ -99,7 +91,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Author"
-                        value={author}
+                        defaultValue={author}
                         className="input input-bordered w-full max-w-xs"
                         {...register("author", {
                             required: {
@@ -122,7 +114,8 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Genre"
-                        value={genre}
+
+                        defaultValue={genre}
                         className="input input-bordered w-full max-w-xs"
                         {...register("genre", {
                             required: {
@@ -142,7 +135,9 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Publication Date"
-                        value={publicationDate}
+
+                        defaultValue={publicationDate}
+
                         className="input input-bordered w-full max-w-xs"
                         {...register("publicationDate", {
                             required: {
@@ -156,20 +151,8 @@ export default function UpdateBook() {
                     </label>
                 </div>
 
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text">Photo</span>
-                    </label>
-                    <input
-                        type="file"
-                        value={image}
-                        className="input input-bordered w-full max-w-xs"
 
-                    />
-                    <label className="label">
-                        {errors.image?.type === 'required' && <span className="label-text-alt text-red-500">{errors.image.message}</span>}
-                    </label>
-                </div>
+
 
                 <input className='btn w-full max-w-xs text-black bg-cyan-800' type="submit" value="Update Book" />
                 <ToastContainer />

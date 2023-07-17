@@ -49,7 +49,7 @@ export default function AddNewBooks() {
                         image: image
                     }
 
-                    postBook(book).unwrap();
+                    postBook(book);
                     toast.success('Book added successfully');
                     reset();
 

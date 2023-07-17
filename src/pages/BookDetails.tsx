@@ -18,8 +18,8 @@ export default function BookDetails() {
 
     const [deleteBook, { isLoading }] = useDeleteBookMutation();
 
-    const handleDeleteBook = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
+    const handleDeleteBook = async () => {
+
 
         try {
             await deleteBook(id).unwrap();

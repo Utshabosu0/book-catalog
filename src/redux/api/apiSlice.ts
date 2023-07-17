@@ -33,7 +33,7 @@ export const api = createApi({
     }),
     updateBook: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/updateBook/${id}`,
+        url: `/book/${id}`,
         method: 'PATCH',
         body: data,
       }),
@@ -43,8 +43,8 @@ export const api = createApi({
 });
 export const {
   useGetBooksQuery,
-  useSingleBookQuery,
   useDeleteBookMutation,
   useUpdateBookMutation,
   usePostBookMutation,
+  useSingleBookQuery,
 } = api;
