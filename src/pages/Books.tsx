@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable prefer-const */
 /* eslint-disable no-dupe-else-if */
@@ -9,19 +10,21 @@
 
 import React, { useState } from 'react'
 import BookData from '../components/ui/BookData'
-import { useAllBooksQuery } from '../redux/api/apiSlice'
 import { IBook } from '../tyoes/globalTypes'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../redux/hook'
 import { setGenre, setSearch, setpublicationDate } from '../redux/features/Book/bookSlice'
 import { Link } from 'react-router-dom'
+import { useGetBooksQuery } from '../redux/api/apiSlice'
 
 export default function Books() {
     const { register } = useForm();
 
 
-    const { data: books } = useAllBooksQuery(undefined)
-
+    const { data: books, isLoading } = useGetBooksQuery(undefined, {
+        refetchOnMountOrArgChange: true,
+        pollingInterval: 30000,
+    })
 
 
     const { genre, publicationDate, search } = useAppSelector((state) => state.book)
@@ -66,18 +69,6 @@ export default function Books() {
         bookData = books?.data
     }
 
-
-
-    // const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const searchText = event.target.value;
-    //     const matchedBooks = books?.data.filter((book: IBook) =>
-    //         book.title?.toLowerCase().includes(searchText.toLowerCase()) ||
-    //         book.author?.toLowerCase().includes(searchText.toLowerCase()) ||
-    //         book.genre?.toLowerCase().includes(searchText.toLowerCase())
-    //     );
-    //     dispatch(setSearch(matchedBooks));
-    // };
-
     return (
         <>
             <div className='flex justify-between mx-[100px]'>
@@ -96,13 +87,6 @@ export default function Books() {
 
             <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
                 <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
-                    {/* <div>
-                    <h1 className="text-2xl uppercase">Availability</h1>
-                    <input type="text"
-
-                        onChange={handleSearchTermChange} placeholder="Search" className="input input-bordered w-24 md:w-auto" />
-                    <button>Search</button>
-                </div> */}
 
                     <div className="form-control w-full max-w-xl"
 
@@ -111,15 +95,15 @@ export default function Books() {
                             <span className="label-text">Genre</span>
                         </label>
                         <select {...register('genre')} className="select input-bordered w-full max-w-xl"
-                            value={genre}
+                            value={genre || ''}
                             onChange={handleGenreFilterChange}
                         >
-                            {
-                                books?.data.map((book: IBook) => <option
-                                    key={book._id}
-                                    value={book.genre}
-                                >{book.genre}</option>)
-                            }
+                            <option value="">None</option>
+                            {books?.data.map((book: IBook) => (
+                                <option key={book._id} value={book.genre}>
+                                    {book.genre}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="form-control w-full max-w-xs"
@@ -129,15 +113,16 @@ export default function Books() {
                         </label>
                         <select {...register('publicationDate')} className="select input-bordered w-full max-w-xs"
                             onChange={handlePublicationDateFilterChange}
-                            value={publicationDate}
+                            value={publicationDate || ''}
 
                         >
-                            {
-                                books?.data.map((book: IBook) => <option
-                                    key={book._id}
-                                    value={book.publicationDate}
-                                >{book.publicationDate}</option>)
-                            }
+                            <option value="">None</option>
+                            {books?.data.map((book: IBook) => (
+                                <option key={book._id} value={book.publicationDate}>
+                                    {book.publicationDate}
+                                </option>
+                            ))}
+
                         </select>
                     </div>
 

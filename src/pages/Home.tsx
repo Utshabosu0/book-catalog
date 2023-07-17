@@ -12,13 +12,16 @@ import { useGetBooksQuery } from "../redux/api/apiSlice"
 import { IBook } from "../tyoes/globalTypes"
 
 export default function Home() {
-    const { data, isLoading, error } = useGetBooksQuery(undefined)
+    const { data, isLoading, error } = useGetBooksQuery(undefined, {
+        refetchOnMountOrArgChange: true,
+        pollingInterval: 30000,
+    })
 
 
     return (
         <div>
-            <div className='text-center'>
-                <h1>
+            <div className='text-start'>
+                <h1 className="text-4xl"> TOP BOOKS
                 </h1>
             </div>
 

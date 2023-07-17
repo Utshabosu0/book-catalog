@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -12,6 +13,8 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSingleBookQuery } from '../redux/api/apiSlice';
+import { useParams } from 'react-router-dom';
 
 
 interface UpdateBook {
@@ -23,10 +26,17 @@ interface UpdateBook {
 }
 
 export default function UpdateBook() {
+    const { id } = useParams();
     const { register, formState: { errors }, handleSubmit, reset } = useForm<UpdateBook>();
 
-    const imageStorageKey = '4295ac4d47b569312bea67b440cdbdbb';
+    const { data, isLoading, error } = useSingleBookQuery(id)
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    const { title, author, genre, publicationDate, image } = data
+    const imageStorageKey = '4295ac4d47b569312bea67b440cdbdbb';
     const onSubmit = (data: UpdateBook) => {
         const image = data.image[0];
         const formData = new FormData();
@@ -47,25 +57,7 @@ export default function UpdateBook() {
                         publicationDate: data.publicationDate,
                         image: image
                     }
-                    // send to your database 
-                    fetch('http://localhost:5001/book', {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json',
-                            // authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                        },
-                        body: JSON.stringify(book)
-                    })
-                        .then(res => res.json())
-                        .then(inserted => {
-                            if (inserted.insertedId) {
-                                toast.success('Book added successfully')
-                                reset();
-                            }
-                            else {
-                                toast.error('Failed to add the book');
-                            }
-                        })
+
 
                 }
 
@@ -75,7 +67,7 @@ export default function UpdateBook() {
 
     return (
         <div className='pl-24'>
-            <h2 className="text-4xl">Add a New Book</h2>
+            <h2 className="text-4xl">Update Book</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -86,6 +78,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Title"
+                        value={title}
                         className="input input-bordered w-full max-w-xs"
                         {...register("title", {
                             required: {
@@ -106,6 +99,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Author"
+                        value={author}
                         className="input input-bordered w-full max-w-xs"
                         {...register("author", {
                             required: {
@@ -128,6 +122,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Genre"
+                        value={genre}
                         className="input input-bordered w-full max-w-xs"
                         {...register("genre", {
                             required: {
@@ -147,6 +142,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Publication Date"
+                        value={publicationDate}
                         className="input input-bordered w-full max-w-xs"
                         {...register("publicationDate", {
                             required: {
@@ -166,20 +162,16 @@ export default function UpdateBook() {
                     </label>
                     <input
                         type="file"
+                        value={image}
                         className="input input-bordered w-full max-w-xs"
-                        {...register("image", {
-                            required: {
-                                value: true,
-                                message: 'Image is Required'
-                            }
-                        })}
+
                     />
                     <label className="label">
                         {errors.image?.type === 'required' && <span className="label-text-alt text-red-500">{errors.image.message}</span>}
                     </label>
                 </div>
 
-                <input className='btn w-full max-w-xs text-black bg-cyan-800' type="submit" value="Add Book" />
+                <input className='btn w-full max-w-xs text-black bg-cyan-800' type="submit" value="Update Book" />
                 <ToastContainer />
             </form>
         </div>

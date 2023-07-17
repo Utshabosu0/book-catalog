@@ -6,35 +6,45 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5001' }),
+  tagTypes: ['books'],
   endpoints: (builder) => ({
     getBooks: builder.query({
       query: () => `/book`,
-    }),
-    allBooks: builder.query({
-      query: () => `/allBook`,
+      providesTags: ['books'],
     }),
     singleBook: builder.query({
       query: (id) => `/book/${id}`,
+      providesTags: ['books'],
+    }),
+    postBook: builder.mutation({
+      query: (data) => ({
+        url: `/book`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['books'],
     }),
     deleteBook: builder.mutation({
       query: (id) => ({
         url: `/book/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['books'],
     }),
     updateBook: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/book/${id}`,
-        method: 'PUT',
+        url: `/updateBook/${id}`,
+        method: 'PATCH',
         body: data,
       }),
+      invalidatesTags: ['books'],
     }),
   }),
 });
 export const {
   useGetBooksQuery,
-  useAllBooksQuery,
   useSingleBookQuery,
   useDeleteBookMutation,
   useUpdateBookMutation,
+  usePostBookMutation,
 } = api;

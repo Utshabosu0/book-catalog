@@ -12,15 +12,15 @@ export default function BookData({ book }: IProps) {
                     <img src={book?.image} alt="product" className='ml-10 mb-5' />
                     <h1 className=" text-xl font-semibold">Title:{book?.title}
                     </h1>
-                </Link>
-                <p>Author: {book?.author}</p>
-                <p className="text-sm">
-                    Genre: {book?.genre}
-                </p>
-                <p className="text-sm">
-                    publication Date: {book?.publicationDate}
-                </p>
 
+                    <p>Author: {book?.author}</p>
+                    <p className="text-sm">
+                        Genre: {book?.genre}
+                    </p>
+                    <p className="text-sm">
+                        publication Date: {book?.publicationDate}
+                    </p>
+                </Link>
             </div>
         </div>
     )

@@ -12,6 +12,7 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { usePostBookMutation } from '../redux/api/apiSlice';
 
 
 interface AddNewBook {
@@ -23,8 +24,8 @@ interface AddNewBook {
 }
 
 export default function AddNewBooks() {
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<AddNewBook>();
-
+    const { register, formState: { errors }, handleSubmit, reset, } = useForm<AddNewBook>();
+    const [postBook] = usePostBookMutation();
     const imageStorageKey = '4295ac4d47b569312bea67b440cdbdbb';
 
     const onSubmit = (data: AddNewBook) => {
@@ -47,25 +48,11 @@ export default function AddNewBooks() {
                         publicationDate: data.publicationDate,
                         image: image
                     }
-                    // send to your database 
-                    fetch('http://localhost:5001/book', {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json',
-                            // authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                        },
-                        body: JSON.stringify(book)
-                    })
-                        .then(res => res.json())
-                        .then(inserted => {
-                            if (inserted.insertedId) {
-                                toast.success('Book added successfully')
-                                reset();
-                            }
-                            else {
-                                toast.error('Failed to add the book');
-                            }
-                        })
+
+                    postBook(book).unwrap();
+                    toast.success('Book added successfully');
+                    reset();
+
 
                 }
 
