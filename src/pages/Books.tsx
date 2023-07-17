@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable prefer-const */
@@ -19,6 +20,7 @@ import { useGetBooksQuery } from '../redux/api/apiSlice'
 
 export default function Books() {
     const { register } = useForm();
+    const [searchText, setSearchText] = useState('')
 
 
     const { data: books, isLoading } = useGetBooksQuery(undefined, {
@@ -42,6 +44,7 @@ export default function Books() {
     };
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
         const searchText = event.target.value.toLowerCase();
         const filteredBooks = books?.data.filter(
             (book: IBook) =>
@@ -78,7 +81,7 @@ export default function Books() {
                         <svg className="h-5 w-5 fill-slate-300" viewBox="0 0 20 20"></svg>
                     </span>
                     <input className="w-[300px] h-[50px]  placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm" placeholder="Search by title author or genre" type="text" name="search"
-                        onChange={handleSearch}
+                        onChange={handleSearch} value={searchText}
                     />
                 </label>
                 <Link className="btn px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 ml-[400px] mb-5" to={'/addNewBook'}>Add New Book </Link>

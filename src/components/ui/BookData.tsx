@@ -13,14 +13,14 @@ export default function BookData({ book }: IProps) {
                     <h1 className=" text-xl font-semibold">Title:{book?.title}
                     </h1>
 
-                    <p>Author: {book?.author}</p>
-                    <p className="text-sm">
-                        Genre: {book?.genre}
-                    </p>
-                    <p className="text-sm">
-                        publication Date: {book?.publicationDate}
-                    </p>
                 </Link>
+                <p>Author: {book?.author}</p>
+                <p className="text-sm">
+                    Genre: {book?.genre}
+                </p>
+                <p className="text-sm">
+                    publication Date: {book?.publicationDate}
+                </p>
             </div>
         </div>
     )
