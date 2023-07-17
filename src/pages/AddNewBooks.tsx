@@ -14,7 +14,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { usePostBookMutation } from '../redux/api/apiSlice';
 
-
 interface AddNewBook {
     image: string;
     title: string;
@@ -27,7 +26,6 @@ export default function AddNewBooks() {
     const { register, formState: { errors }, handleSubmit, reset, } = useForm<AddNewBook>();
     const [postBook] = usePostBookMutation();
     const imageStorageKey = '4295ac4d47b569312bea67b440cdbdbb';
-
     const onSubmit = (data: AddNewBook) => {
         const image = data.image[0];
         const formData = new FormData();
@@ -48,24 +46,17 @@ export default function AddNewBooks() {
                         publicationDate: data.publicationDate,
                         image: image
                     }
-
                     postBook(book);
                     toast.success('Book added successfully');
                     reset();
-
-
                 }
-
             })
     }
-
 
     return (
         <div className='pl-24'>
             <h2 className="text-4xl">Add a New Book</h2>
-
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Title</span>
@@ -85,7 +76,6 @@ export default function AddNewBooks() {
                         {errors.title?.type === 'required' && <span className="label-text-alt text-red-500">{errors.title.message}</span>}
                     </label>
                 </div>
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Author</span>
@@ -105,9 +95,6 @@ export default function AddNewBooks() {
                         {errors.author?.type === 'required' && <span className="label-text-alt text-red-500">{errors.author.message}</span>}
                     </label>
                 </div>
-
-
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Genre</span>
@@ -146,7 +133,6 @@ export default function AddNewBooks() {
                         {errors.publicationDate?.type === 'required' && <span className="label-text-alt text-red-500">{errors.publicationDate.message}</span>}
                     </label>
                 </div>
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Photo</span>

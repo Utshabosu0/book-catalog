@@ -4,19 +4,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-
-import { useEffect, useState } from "react";
 import Footer from "../components/common/footer";
 import HomeCard from "../components/ui/HomeCard"
 import { useGetBooksQuery } from "../redux/api/apiSlice"
 import { IBook } from "../tyoes/globalTypes"
 
 export default function Home() {
-    const { data, isLoading, error } = useGetBooksQuery(undefined, {
+    const { data } = useGetBooksQuery(undefined, {
         refetchOnMountOrArgChange: true,
         pollingInterval: 30000,
     })
-
 
     return (
         <div>
@@ -24,7 +21,6 @@ export default function Home() {
                 <h1 className="text-4xl"> TOP BOOKS
                 </h1>
             </div>
-
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mx-2  md:mx-5 '>
                 {
                     data?.data.slice(0, 10).map((book: IBook) => {
@@ -32,7 +28,6 @@ export default function Home() {
                     })
                 }
             </div>
-
             <Footer />
         </div >
 

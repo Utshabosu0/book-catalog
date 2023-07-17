@@ -7,7 +7,6 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
 import { setUser } from '../../redux/features/users/userSlice';
 
-
 export default function Navbar() {
     const { user } = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
@@ -15,7 +14,6 @@ export default function Navbar() {
     const handleLogout = () => {
         console.log('Logout');
         signOut(auth).then(() => {
-            // Sign-out successful.
             dispatch(setUser(null));
         });
     };
@@ -25,16 +23,16 @@ export default function Navbar() {
                 <a className="btn btn-ghost normal-case text-4xl text-red-950">BOOK CATALOG</a>
             </div>
             <div className="navbar-center">
-
             </div>
             <div className="flex-none gap-2">
-
                 <li className='list-none mx-5'><NavLink className='nav-button-link' to="/">Home</NavLink></li>
                 <li className='list-none mx-5'><NavLink className='nav-button-link' to="/allBooks">Books</NavLink></li>
-                <li className='list-none mx-5'><NavLink className='nav-button-link' to="/wishList">WishList</NavLink></li>
-                <li className='list-none mx-5'><NavLink className='nav-button-link' to="/bookRead">ReadBook</NavLink></li>
-
-
+                {
+                    user.email && <>
+                        <li className='list-none mx-5'><NavLink className='nav-button-link' to="/wishList">WishList</NavLink></li>
+                        <li className='list-none mx-5'><NavLink className='nav-button-link' to="/bookRead">ReadBook</NavLink></li>
+                    </>
+                }
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-24 rounded-full">
@@ -66,9 +64,7 @@ export default function Navbar() {
                                     LogOut
                                 </a>
                             </li>
-
                         }
-
                     </ul>
                 </div>
             </div>

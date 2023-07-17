@@ -7,12 +7,14 @@ import { addToWishList } from '../../redux/features/wishList/wishListSlice';
 interface IProps {
     book: IBook;
 }
+
 export default function BookData({ book }: IProps) {
     const disPatch = useAppDispatch();
     const handleAddWishList = (book: IBook) => {
         disPatch(addToWishList(book));
         toast.success('Book added WishList');
     };
+
     return (
         <div>
             <div className="rounded-2xl h-[500px] flex flex-col items-start justify-between p-5 overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:scale-[102%] transition-all gap-2">
@@ -20,7 +22,6 @@ export default function BookData({ book }: IProps) {
                     <img src={book?.image} alt="product" className='ml-10 mb-5' />
                     <h1 className=" text-xl font-semibold">Title:{book?.title}
                     </h1>
-
                 </Link>
                 <p>Author: {book?.author}</p>
                 <p className="text-sm">

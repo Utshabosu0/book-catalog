@@ -5,8 +5,6 @@ import WishListCard from '../components/ui/WishListCard'
 
 export default function WishList() {
     const { wishLists } = useAppSelector((state) => state.wishList)
-
-
     return (<>
         <h1 className='text-4xl'>Book Wish List</h1>
         <div className="grid grid-cols-12 max-w-7xl mx-auto ">

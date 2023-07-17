@@ -12,8 +12,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { loginUser } from '../redux/features/users/userSlice';
 import signLog from '../assets/signLog.svg'
-
-
 interface LogInFormInputs {
     email: string;
     password: string;

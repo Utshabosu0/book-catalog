@@ -16,7 +16,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSingleBookQuery, useUpdateBookMutation } from '../redux/api/apiSlice';
 import { useParams } from 'react-router-dom';
 
-
 interface UpdateBook {
     image: string;
     title: string;
@@ -27,9 +26,9 @@ interface UpdateBook {
 
 export default function UpdateBook() {
     const { id } = useParams();
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<UpdateBook>();
+    const { register, formState: { errors }, handleSubmit } = useForm<UpdateBook>();
 
-    const { data, isLoading, error } = useSingleBookQuery(id)
+    const { data, isLoading } = useSingleBookQuery(id)
     const [updateBook] = useUpdateBookMutation();
 
     if (isLoading) {
@@ -48,21 +47,14 @@ export default function UpdateBook() {
                 publicationDate: data.publicationDate
             }
         }
-
         updateBook(book).unwrap();
         toast.success('Book update successfully');
-
-
-
-
     }
 
     return (
         <div className='pl-24'>
             <h2 className="text-4xl">Update Book</h2>
-
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Title</span>
@@ -83,7 +75,6 @@ export default function UpdateBook() {
                         {errors.title?.type === 'required' && <span className="label-text-alt text-red-500">{errors.title.message}</span>}
                     </label>
                 </div>
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Author</span>
@@ -104,9 +95,6 @@ export default function UpdateBook() {
                         {errors.author?.type === 'required' && <span className="label-text-alt text-red-500">{errors.author.message}</span>}
                     </label>
                 </div>
-
-
-
                 <div className="form-control w-full max-w-xs">
                     <label className="label">
                         <span className="label-text">Genre</span>
@@ -114,7 +102,6 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Genre"
-
                         defaultValue={genre}
                         className="input input-bordered w-full max-w-xs"
                         {...register("genre", {
@@ -135,9 +122,7 @@ export default function UpdateBook() {
                     <input
                         type="text"
                         placeholder="Your Publication Date"
-
                         defaultValue={publicationDate}
-
                         className="input input-bordered w-full max-w-xs"
                         {...register("publicationDate", {
                             required: {
@@ -150,10 +135,6 @@ export default function UpdateBook() {
                         {errors.publicationDate?.type === 'required' && <span className="label-text-alt text-red-500">{errors.publicationDate.message}</span>}
                     </label>
                 </div>
-
-
-
-
                 <input className='btn w-full max-w-xs text-black bg-cyan-800' type="submit" value="Update Book" />
                 <ToastContainer />
             </form>

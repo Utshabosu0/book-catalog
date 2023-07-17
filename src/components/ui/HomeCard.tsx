@@ -1,12 +1,10 @@
-
 import React from 'react'
 import { IBook } from '../../tyoes/globalTypes';
 import { Link } from 'react-router-dom';
-
-
 interface IProps {
     book: IBook;
 }
+
 export default function HomeCard({ book }: IProps) {
 
     return (

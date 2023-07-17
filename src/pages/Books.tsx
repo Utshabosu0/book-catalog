@@ -22,12 +22,10 @@ export default function Books() {
     const { register } = useForm();
     const [searchText, setSearchText] = useState('')
 
-
     const { data: books, isLoading } = useGetBooksQuery(undefined, {
         refetchOnMountOrArgChange: true,
         pollingInterval: 30000,
     })
-
 
     const { genre, publicationDate, search } = useAppSelector((state) => state.book)
 
@@ -40,7 +38,6 @@ export default function Books() {
     const handlePublicationDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedPublication = event.target.value;
         dispatch(setpublicationDate(selectedPublication));
-
     };
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +49,6 @@ export default function Books() {
                 book.author.toLowerCase().includes(searchText) ||
                 book.genre.toLowerCase().includes(searchText)
         );
-
         dispatch(setSearch(filteredBooks));
     };
 
@@ -85,14 +81,10 @@ export default function Books() {
                     />
                 </label>
                 <Link className="btn px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 ml-[400px] mb-5" to={'/addNewBook'}>Add New Book </Link>
-
             </div>
-
             <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
                 <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
-
                     <div className="form-control w-full max-w-xl"
-
                     >
                         <label className="label">
                             <span className="label-text">Genre</span>
@@ -116,19 +108,15 @@ export default function Books() {
                         </label>
                         <select {...register('publicationDate')} className="select input-bordered w-full max-w-xs"
                             onChange={handlePublicationDateFilterChange}
-                            value={publicationDate || ''}
-
-                        >
+                            value={publicationDate || ''} >
                             <option value="">None</option>
                             {books?.data.map((book: IBook) => (
                                 <option key={book._id} value={book.publicationDate}>
                                     {book.publicationDate}
                                 </option>
                             ))}
-
                         </select>
                     </div>
-
                 </div>
                 <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
                     {

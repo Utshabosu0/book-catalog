@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -9,7 +10,6 @@ import signLog from '../assets/signLog.svg'
 import { useAppDispatch } from '../redux/hook';
 import { createUser } from '../redux/features/users/userSlice';
 import { useForm } from 'react-hook-form';
-
 interface SignupFormInputs {
     email: string;
     password: string;
