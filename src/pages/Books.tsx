@@ -20,9 +20,9 @@ import { useGetBooksQuery } from '../redux/api/apiSlice'
 
 export default function Books() {
     const { register } = useForm();
-    const [searchText, setSearchText] = useState('')
+    const [searchText] = useState('')
 
-    const { data: books, isLoading } = useGetBooksQuery(undefined, {
+    const { data: books } = useGetBooksQuery(undefined, {
         refetchOnMountOrArgChange: true,
         pollingInterval: 30000,
     })

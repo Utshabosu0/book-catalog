@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { IBook } from '../../tyoes/globalTypes';
 import { removeFromReadBooks } from '../../redux/features/wishList/wishListSlice';
 import { useAppDispatch } from '../../redux/hook';

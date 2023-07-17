@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React from 'react'
+
 import { Link } from 'react-router-dom'
 import signLog from '../assets/signLog.svg'
 import { useAppDispatch } from '../redux/hook';
