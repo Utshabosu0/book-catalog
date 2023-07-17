@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { NavLink } from 'react-router-dom';
@@ -30,6 +31,9 @@ export default function Navbar() {
 
                 <li className='list-none mx-5'><NavLink className='nav-button-link' to="/">Home</NavLink></li>
                 <li className='list-none mx-5'><NavLink className='nav-button-link' to="/allBooks">Books</NavLink></li>
+                <li className='list-none mx-5'><NavLink className='nav-button-link' to="/wishList">WishList</NavLink></li>
+                <li className='list-none mx-5'><NavLink className='nav-button-link' to="/bookRead">ReadBook</NavLink></li>
+
 
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
